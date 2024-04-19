@@ -1,0 +1,34 @@
+PFLOTRAN files
+
+* This is for running EnKF a 1D vadose-zone flow simulation with one rain event.  
+
+= master files
+- master_Tvaries.py: creates synthetic time series of soil moisture data
+- masterEnKF0727.py: estimates the soil moisture based on the synthetic data
+
+= Subfiles
+- E1_regions_grid.txt: define all the grid blocks 
+- E2_obs2grid.txt: define all the grid block locations
+- E3_sink_dry.txt: define all a sink term in each grid block
+- E4_sink2region.txt: assign sink terms on grid blocks
+- E5_obs2initial.txt: define initial conditions 
+- E6_initial2grid.txt: assign initial conditions on grid blocks
+- rainfall_v1.txt: defines the rain rate over time (PFLOTRAN boundary condition format)
+- T_v1.txt: defines the tranpiration rate over time (PFLOTRAN boundary condition format)
+
+= Write subfiles
+- et2sink.py: write E3_sink_dry.txt
+- et2sink_lim.py: write E3_sink_dry.txt
+- F_root_fraction.py: define the root distribution called by write_sink_root.py
+- rain2window.py: assign the rain/precipitation rate within the time window
+- Tseries2T.py: assign the traspiration	rate within the	time window
+- obsread.py: reads pressure values from pflotran-obs-0.tec
+- pres2initial.py: assign different initial pressure conditions at the grid blocks
+- Kalman_functions.py: defines various functions necessary for EnKF
+- pres_theta.py: converts theta to pressure or pressure to theta
+
+= pflotran input files
+- pf_initia.in: runs from the uniform initial conditions
+- pf_seq.in: runs from the non-uniform initial conditions (diffferent values at grid blocks) 
+
+

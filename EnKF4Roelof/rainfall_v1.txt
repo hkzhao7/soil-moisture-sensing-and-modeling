@@ -1,0 +1,5 @@
+TIME_UNITS hr
+DATA_UNITS m/hr
+0.0  0.0
+48.0  0.04
+50.0  0.0

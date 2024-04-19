@@ -1,0 +1,28 @@
+PFLOTRAN files
+
+* This is for running a 1D vadose-zone flow simulation with one rain event.  
+
+- pflotran.in: PFLOTRAN input file
+
+= Subfiles
+- E1_regions_grid.txt: define all the grid blocks 
+- E2_obs2grid.txt: define all the grid block locations
+- E3_sink_dry.txt: define all a sink term in each grid block
+- E4_sink2region.txt: assign sink terms on grid blocks
+- E5_obs2initial.txt: define initial conditions 
+- E6_initial2grid.txt: assign initial conditions on grid blocks
+- rainfall_v1.txt: defines the rain rate over time (PFLOTRAN boundary condition format)
+- T_v1.txt: defines the tranpiration rate over time (PFLOTRAN boundary condition format)
+
+= Write subfiles
+- et2sink.py: write E3_sink_dry.txt
+- et2sink_lim.py: write E3_sink_dry.txt
+- F_root_fraction.py: define the root distribution called by write_sink_root.py
+
+
+= Run script
+- master.py: “python master.py” runs the simulations
+
+= Output
+- pflotran-obs-0.tec: output of time series of pressure and saturation at each grid block. Each row is {time, pressure1, saturation1, pressure2, saturation2, pressure3, saturation3, ….}
+

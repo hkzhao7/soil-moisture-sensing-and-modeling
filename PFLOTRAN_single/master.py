@@ -1,0 +1,12 @@
+
+# Run PFLOTRAN sequentially
+import os, sys, time, math
+import subprocess
+from write_sink_root import *
+
+E  = -4.17e-5                                                                                                                      
+T  = -1.0e-4
+
+et2sinks(E,T)
+os.system('~/pflotran/src/pflotran/pflotran > log')
+

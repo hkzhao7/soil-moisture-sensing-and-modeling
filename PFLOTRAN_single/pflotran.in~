@@ -1,0 +1,173 @@
+# 1D soil column model
+ 
+SIMULATION
+  SIMULATION_TYPE SUBSURFACE
+  PROCESS_MODELS
+    SUBSURFACE_FLOW flow
+      MODE RICHARDS
+    /
+  /
+END
+ 
+SUBSURFACE
+
+#=========================== numerical methods ================================
+NUMERICAL_METHODS FLOW
+  NEWTON_SOLVER
+    MAXIMUM_NUMBER_OF_ITERATIONS 20
+    ITOL_UPDATE 1.d0
+  /
+END
+ 
+#=========================== discretization ===================================
+GRID
+  TYPE structured
+  NXYZ 1 1 30
+  DXYZ
+   1.0
+   1.0
+   0.05
+  END
+END
+ 
+#=========================== regions ==========================================
+REGION all
+  COORDINATES
+    -1e20  -1e20  -1e20
+    1e20   1e20	 1e20 
+  /
+END
+ 
+REGION top_face
+  FACE TOP
+  COORDINATES
+    0.d0  0.d0  1.5d0
+    1.d0  1.d0  1.5d0
+  /
+END
+ 
+REGION bottom_face
+  FACE BOTTOM
+  COORDINATES
+    0.d0  0.d0  0.d0
+    1.d0  1.d0  0.d0
+  /
+END
+
+REGION col
+  COORDINATES
+    0.d0  0.d0  0.d0
+    1.d0  1.d0  1.5d0
+  /
+END
+
+EXTERNAL_FILE E1_regions_grid.txt
+
+#=========================observation===========================  
+EXTERNAL_FILE E2_obs2grid.txt 
+
+#==========================solver=======================================
+
+ 
+#=========================== material properties ==============================
+MATERIAL_PROPERTY soil1
+  ID 1
+  POROSITY 0.4
+  TORTUOSITY 1.d0
+  SATURATION_FUNCTION default
+  PERMEABILITY
+    PERM_X 1.d-13
+    PERM_Y 1.d-13
+    PERM_Z 1.d-13
+  /
+END
+ 
+#=========================== characteristic curves ============================
+CHARACTERISTIC_CURVES default
+  SATURATION_FUNCTION VAN_GENUCHTEN
+    M 0.5d0
+    ALPHA  1.0d-3
+    LIQUID_RESIDUAL_SATURATION 0.05d0
+    MAX_CAPILLARY_PRESSURE 1.d8
+  /
+  PERMEABILITY_FUNCTION MUALEM_VG_LIQ
+    M 0.5d0
+    LIQUID_RESIDUAL_SATURATION 0.1d0
+  /
+END
+#===================== stratigraphy couplers ==================================
+STRATA 
+  REGION all
+  MATERIAL soil1
+END
+ 
+#=========================== output options ===================================
+OUTPUT
+  PERIODIC_OBSERVATION TIME 1.0 hr 
+  PERIODIC TIME 0.25 hr  
+  FORMAT HDF5
+  VELOCITY_AT_CENTER
+  PRINT_COLUMN_IDS
+END
+ 
+#=========================== times ============================================
+TIME
+  FINAL_TIME 10 day
+  INITIAL_TIMESTEP_SIZE 1.d-3 hr
+  MAXIMUM_TIMESTEP_SIZE 0.05 hr
+END
+ 
+#======================= flow conditions ======================================
+FLOW_CONDITION initial
+  TYPE
+    PRESSURE DIRICHLET
+  /
+  DATUM 0.d0 0.d0 0.d0
+  PRESSURE 98530.7
+END
+
+
+FLOW_CONDITION bottomf
+  TYPE
+    PRESSURE hydrostatic
+    FLUX NEUMANN
+  /
+  DATUM 0.d0 0.d0 0.d0
+  PRESSURE  98530.7
+  FLUX 0
+END
+
+FLOW_CONDITION top_rainf
+  TYPE
+    FLUX neumann
+  /
+  FLUX FILE rainfall_v1.txt
+END
+
+EXTERNAL_FILE E3_sink_dry.txt
+
+#========================== initial and boundary conditions ===================
+# initial condition
+INITIAL_CONDITION initial
+  REGION all
+  FLOW_CONDITION initial
+END
+ 
+
+# sink
+EXTERNAL_FILE E4_sink2region.txt
+ 
+# bottom boundary condition
+BOUNDARY_CONDITION bottom
+  FLOW_CONDITION bottomf
+  REGION bottom_face
+END
+
+# top boundary condition
+BOUNDARY_CONDITION top_rain
+  FLOW_CONDITION top_rainf
+  REGION top_face
+END
+ 
+END_SUBSURFACE
+ 
