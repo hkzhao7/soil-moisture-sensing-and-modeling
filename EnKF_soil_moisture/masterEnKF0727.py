@@ -77,22 +77,22 @@ for i in range(n_t):
     print('Run #:'+str(i))
     time =i*dt
     rain2window(rain,time)
-    T_sample      = np.random.normal(T_max_mu, T_max_sigma, n_rand) # Tmax from prior
-    theta_init_sample = np.random.multivariate_normal(theta_n_posterior, P_posterior, n_rand) # Tmax from prior 
+    T_sample      = np.random.normal(T_max_mu, T_max_sigma, n_rand) # Tmax from prior, total transpiration
+    theta_init_sample = np.random.multivariate_normal(theta_n_posterior, P_posterior, n_rand) # Tmax from prior, random variable theta, P covariance 
     theta_sample      = np.zeros((n,n_rand));
     for i_rand in range(n_rand):
         T_max = (-1)*T_sample[i_rand]
-        pres = theta2pres(theta_init_sample[i_rand,:], m, s_lr, alpha, por)
-        pres2initial(pres)
-        et2sinks_lim(E_max, T_max, theta_init_sample[i_rand,:], s_lr, theta1,theta2)
+        pres = theta2pres(theta_init_sample[i_rand,:], m, s_lr, alpha, por)    # convert the tot pressure
+        pres2initial(pres)    # pressure to the inital
+        et2sinks_lim(E_max, T_max, theta_init_sample[i_rand,:], s_lr, theta1,theta2)    # T-max -> sinks
         os.system('~/pflotran/src/pflotran/pflotran > log')
         pres, end_time = obsread(n)
         theta = pres2theta(pres, m, s_lr, alpha, por)
-        theta_sample[:,i_rand]    = theta
+        theta_sample[:,i_rand]    = theta    # theta_smaple is the PDF of theta at step i+1
         
     # ---------------------------
-    P_prior  = np.cov(theta_sample)
-    theta_n_prior = np.mean(theta_sample.transpose(),axis=0)
+    P_prior  = np.cov(theta_sample)    # sample covariance, multivaribale-gaussian
+    theta_n_prior = np.mean(theta_sample.transpose(),axis=0)    # sample mean
     print(theta_n_prior)
     print(np.dot(H,theta_n_prior))
     # Kalman update 
