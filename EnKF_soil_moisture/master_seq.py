@@ -12,15 +12,15 @@ from pres_theta import *
 # ----------------
 # Parameters
 # ----------------
-E  = -4.17e-8    # unit changed (1/1000)
-T  = -2.0e-7    # unit changed (1/1000)
+E  = -4.17e-5    # unit changed (1/1000), then unchanged
+T  = -2.0e-4    # unit changed (1/1000), then unchanged
 
-n  = 30 #30 grid blocks
+n  = 30 # 30 grid blocks
 std_noise = 0.001 # Measurement error in the measurement function
 
 # Time steps
 dt = 2 # hr, observation time steps
-n_t  = 100  # # time steps
+n_t  = 100  # time steps
 
 # Measurements 
 idx_dep = [10,17,23,29] # measured gridblocks    
@@ -41,7 +41,7 @@ theta2 = 0.2
 # ----------------
 sensor_data  = np.zeros((len(idx_dep),n_t)) # soil moisture save array
 theta_save   = np.zeros((n,n_t)) # soil moisture save array
-H   = H_mat(n, idx_dep)
+H  = H_mat(n, idx_dep)    # H_mat_avg() new function to convert measurements
 
 # ----------------                                                                                                                                     
 # Initial Condition                                                                                                                                    

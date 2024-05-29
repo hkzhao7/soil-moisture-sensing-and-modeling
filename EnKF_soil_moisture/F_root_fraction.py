@@ -10,8 +10,8 @@ import matplotlib.pyplot as plt
 
         
 def root_fr(z,dz):     
-    z50 = 0.1  # 0.1
-    z95 = 0.6 # 0.6
+    z50 = 0.1  # 50% of the root is above 0.1 m
+    z95 = 0.6  # 95% of the root is above 0.6 m
 
     crf = 1.27875 / (np.log10(z50) - np.log10(z95)); 
     Frooti = -dz*crf/z50*(z/z50)**(crf-1)*(1+(z/z50)**crf)**(-2)
