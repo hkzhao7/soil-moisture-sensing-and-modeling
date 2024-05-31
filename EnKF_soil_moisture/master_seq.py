@@ -12,21 +12,21 @@ from pres_theta import *
 # ----------------
 # Parameters
 # ----------------
-E  = -4.17e-5    # unit changed (1/1000), then unchanged
-T  = -2.0e-4    # unit changed (1/1000), then unchanged
+E  = -1.87e-4    # unit changed (1/1000), then unchanged
+T  = -7.47e-4    # unit changed (1/1000), then unchanged
 
 n  = 30 # 30 grid blocks
 std_noise = 0.001 # Measurement error in the measurement function
 
 # Time steps
-dt = 2 # hr, observation time steps
-n_t  = 100  # time steps
+dt = 1 # hr, observation time steps
+n_t  = 2327  # time steps
 
 # Measurements 
-idx_dep = [10,17,23,29] # measured gridblocks    
+idx_dep = [4] # measured gridblocks    
 
 # Rainfall
-rain = np.genfromtxt('rainfall_v1.txt',skip_header=2)
+rain = np.genfromtxt('rainfall_columbia_winter.txt', skip_header=2)
 
 # Parameters
 m = 0.5
@@ -61,7 +61,7 @@ for i in range(n_t):
     time = i*dt
     rain2window(rain,time)
     pres2initial(pres)
-    et2sinks_lim(E, T, theta, s_lr, theta1,theta2)
+    et2sinks_lim(E, T, theta, s_lr, theta1, theta2)
     os.system('~/pflotran/src/pflotran/pflotran > log')
     pres, end_time = obsread(n)
     theta = pres2theta(pres, m, s_lr, alpha, por)

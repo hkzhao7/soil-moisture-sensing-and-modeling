@@ -12,23 +12,23 @@ from pres_theta import*
 # ----------------
 # Parameters
 # ----------------
-E_max  = -4.17e-5
+E_max  = -3.64e-4
 
 # Read variable T
-Tseries = np.genfromtxt('T_v1.txt',skip_header=2)
+Tseries = np.genfromtxt('T_columbia_winter.txt', skip_header=2)
 
 # Rainfall                                                                                                                  
-rain = np.genfromtxt('rainfall_v1.txt',skip_header=2)
+rain = np.genfromtxt('rainfall_columbia_winter.txt', skip_header=2)
 
 n  = 30 #30 grid blocks
 std_noise = 0.0005 # Measurement error in the measurement function
 
 # Time steps
-dt = 2 # hr, observation time steps
-n_t  = 100  # # time steps
+dt = 1 # hr, observation time steps
+n_t  = 2327  # # time steps
 
 #  Measurements 
-idx_dep = [10,17,23,29] # measured gridblocks (from bottom to top = surface)
+idx_dep = [4] # measured gridblocks (from bottom to top = surface)
 
 # Parameters
 m = 0.5
